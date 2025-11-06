@@ -1,9 +1,13 @@
 import React, { useState, useCallback } from 'react';
 import { generateProductBacklog, getClarification } from './services/geminiService';
-import { exportToJiraCsv, exportToAdoCsv } from './services/exportService';
-import { UserStory } from './types';
+import { exportToJiraApi, exportToAdoApi, importFromJiraApi, importFromAdoApi } from './services/apiService';
+import { UserStory, ImportFormData } from './types';
 import InputPanel from './components/InputPanel';
 import OutputPanel from './components/OutputPanel';
+import ExportModal, { ExportFormData } from './components/ExportModal';
+import ImportModal from './components/ImportModal';
+import VideoInfoModal from './components/VideoInfoModal';
+
 
 const App: React.FC = () => {
   const [epicText, setEpicText] = useState<string>('');
@@ -13,7 +17,14 @@ const App: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [clarificationAnswer, setClarificationAnswer] = useState<string | null>(null);
   const [isClarifying, setIsClarifying] = useState<boolean>(false);
-  const [exportingTo, setExportingTo] = useState<'jira' | 'ado' | null>(null);
+
+  const [exportModalConfig, setExportModalConfig] = useState<{ type: 'jira' | 'ado', isOpen: boolean }>({ type: 'jira', isOpen: false });
+  const [exportState, setExportState] = useState<{ status: 'idle' | 'loading' | 'error' | 'success', message: string }>({ status: 'idle', message: '' });
+
+  const [importModalConfig, setImportModalConfig] = useState<{ type: 'jira' | 'ado', isOpen: boolean }>({ type: 'jira', isOpen: false });
+  const [importState, setImportState] = useState<{ status: 'idle' | 'loading' | 'error' | 'success', message: string }>({ status: 'idle', message: '' });
+
+  const [isVideoInfoModalOpen, setIsVideoInfoModalOpen] = useState<boolean>(false);
 
 
   const handleGenerateStories = useCallback(async () => {
@@ -50,25 +61,60 @@ const App: React.FC = () => {
         setIsClarifying(false);
       }
   }, [generatedStories, knowledgeBaseText]);
+  
+  // --- EXPORT LOGIC ---
+  const openExportModal = (type: 'jira' | 'ado') => {
+    setExportModalConfig({ type, isOpen: true });
+    setExportState({ status: 'idle', message: '' });
+  };
 
-  const handleExport = useCallback(async (type: 'jira' | 'ado') => {
-    setExportingTo(type);
-    
-    // Simulate an async operation to provide better UX for the loading state.
-    await new Promise(resolve => setTimeout(resolve, 1000));
+  const closeExportModal = () => {
+    setExportModalConfig(prev => ({ ...prev, isOpen: false }));
+  };
 
+  const handleApiExport = async (formData: ExportFormData) => {
+    setExportState({ status: 'loading', message: `Exporting ${generatedStories.length} stories...` });
     try {
-      if (type === 'jira') {
-        exportToJiraCsv(generatedStories);
+      let result;
+      if (exportModalConfig.type === 'jira') {
+        result = await exportToJiraApi(formData, generatedStories);
       } else {
-        exportToAdoCsv(generatedStories);
+        result = await exportToAdoApi(formData, generatedStories);
       }
+      setExportState({ status: 'success', message: result.message });
     } catch (err) {
-      alert(`Export failed: ${err instanceof Error ? err.message : 'An unknown error occurred.'}`);
-    } finally {
-      setExportingTo(null);
+      const errorMessage = err instanceof Error ? err.message : 'An unknown error occurred during export.';
+      setExportState({ status: 'error', message: errorMessage });
     }
-  }, [generatedStories]);
+  };
+
+  // --- IMPORT LOGIC ---
+  const openImportModal = (type: 'jira' | 'ado') => {
+    setImportModalConfig({ type, isOpen: true });
+    setImportState({ status: 'idle', message: '' });
+  };
+
+  const closeImportModal = () => {
+    setImportModalConfig(prev => ({ ...prev, isOpen: false }));
+  };
+  
+  const handleApiImport = async (formData: ImportFormData) => {
+    setImportState({ status: 'loading', message: 'Fetching data...'});
+    try {
+        let resultText;
+        if (importModalConfig.type === 'jira') {
+            resultText = await importFromJiraApi(formData);
+        } else {
+            resultText = await importFromAdoApi(formData);
+        }
+        setKnowledgeBaseText(prev => `${prev}\n\n--- IMPORTED FROM ${importModalConfig.type.toUpperCase()} ---\n${resultText}`);
+        setImportState({ status: 'success', message: 'Successfully imported data into Knowledge Base!' });
+        setTimeout(closeImportModal, 1500); // Close modal after success message
+    } catch (err) {
+        const errorMessage = err instanceof Error ? err.message : 'An unknown error occurred during import.';
+        setImportState({ status: 'error', message: errorMessage });
+    }
+  }
 
 
   return (
@@ -90,7 +136,9 @@ const App: React.FC = () => {
             knowledgeBaseText={knowledgeBaseText}
             setKnowledgeBaseText={setKnowledgeBaseText}
             onGenerate={handleGenerateStories}
-            isLoading={isLoading}
+            isLoading={isLoading || exportState.status === 'loading' || importState.status === 'loading'}
+            onOpenImportModal={openImportModal}
+            onOpenVideoInfoModal={() => setIsVideoInfoModalOpen(true)}
           />
           <OutputPanel
             stories={generatedStories}
@@ -99,9 +147,9 @@ const App: React.FC = () => {
             onClarify={handleClarify}
             clarificationAnswer={clarificationAnswer}
             isClarifying={isClarifying}
-            onExportJira={() => handleExport('jira')}
-            onExportAdo={() => handleExport('ado')}
-            exportingTo={exportingTo}
+            onExportJira={() => openExportModal('jira')}
+            onExportAdo={() => openExportModal('ado')}
+            isExporting={exportState.status === 'loading'}
           />
         </main>
 
@@ -109,6 +157,29 @@ const App: React.FC = () => {
           <p>This is a prototype demonstrating AI-assisted product ownership. Always review and refine generated content.</p>
         </footer>
       </div>
+
+      {exportModalConfig.isOpen && (
+        <ExportModal
+          type={exportModalConfig.type}
+          onClose={closeExportModal}
+          onSubmit={handleApiExport}
+          exportState={exportState}
+          storyCount={generatedStories.length}
+        />
+      )}
+
+      {importModalConfig.isOpen && (
+        <ImportModal
+          type={importModalConfig.type}
+          onClose={closeImportModal}
+          onSubmit={handleApiImport}
+          importState={importState}
+        />
+      )}
+
+      {isVideoInfoModalOpen && (
+        <VideoInfoModal onClose={() => setIsVideoInfoModalOpen(false)} />
+      )}
     </div>
   );
 };

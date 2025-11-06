@@ -12,7 +12,7 @@ interface OutputPanelProps {
   isClarifying: boolean;
   onExportJira: () => void;
   onExportAdo: () => void;
-  exportingTo: 'jira' | 'ado' | null;
+  isExporting: boolean;
 }
 
 const OutputPanel: React.FC<OutputPanelProps> = ({
@@ -24,7 +24,7 @@ const OutputPanel: React.FC<OutputPanelProps> = ({
   isClarifying,
   onExportJira,
   onExportAdo,
-  exportingTo,
+  isExporting,
 }) => {
   const [question, setQuestion] = useState('');
 
@@ -82,25 +82,17 @@ const OutputPanel: React.FC<OutputPanelProps> = ({
             <div className="flex items-center space-x-2">
                 <button
                 onClick={onExportJira}
-                disabled={!!exportingTo}
-                className="flex items-center justify-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-offset-slate-900 transition-colors duration-200"
+                disabled={isExporting}
+                className="flex items-center justify-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-offset-slate-900 transition-colors duration-200"
                 >
-                {exportingTo === 'jira' ? (
-                    <><LoadingSpinner /><span className="ml-2 hidden sm:inline">Exporting...</span></>
-                ) : (
-                    <><JiraIcon /><span className="ml-2 hidden sm:inline">Export to Jira</span></>
-                )}
+                  <JiraIcon /><span className="ml-2 hidden sm:inline">Export to Jira</span>
                 </button>
                 <button
                 onClick={onExportAdo}
-                disabled={!!exportingTo}
-                className="flex items-center justify-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-sky-600 hover:bg-sky-700 disabled:bg-sky-400 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 dark:focus:ring-offset-slate-900 transition-colors duration-200"
+                disabled={isExporting}
+                className="flex items-center justify-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-sky-600 hover:bg-sky-700 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 dark:focus:ring-offset-slate-900 transition-colors duration-200"
                 >
-                {exportingTo === 'ado' ? (
-                    <><LoadingSpinner /><span className="ml-2 hidden sm:inline">Exporting...</span></>
-                ) : (
-                    <><AdoIcon /><span className="ml-2 hidden sm:inline">Export to ADO</span></>
-                )}
+                  <AdoIcon /><span className="ml-2 hidden sm:inline">Export to ADO</span>
                 </button>
             </div>
         </div>

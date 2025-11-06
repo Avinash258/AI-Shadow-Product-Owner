@@ -38,7 +38,7 @@ export const SendIcon = () => (
 );
 
 export const UploadIcon = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
     </svg>
 );
@@ -49,6 +49,13 @@ export const XCircleIcon = () => (
   </svg>
 );
 
+export const XIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+    </svg>
+);
+
+
 export const JiraIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
         <path d="M22.08 10.73l-8.35-8.35a1.84 1.84 0 00-2.6 0l-8.35 8.35a1.84 1.84 0 000 2.6l8.35 8.35a1.84 1.84 0 002.6 0l8.35-8.35a1.84 1.84 0 000-2.6zM11.51 3.4l7.08 7.08h-4.48l-2.6-2.6zm.9 17.2l-7.08-7.08h4.48l2.6 2.6z"></path>
@@ -58,5 +65,17 @@ export const JiraIcon = () => (
 export const AdoIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
         <path d="M12.44 1.28l-9.61 3.32a1 1 0 00-.67.95v13.34a1 1 0 00.67.95l9.61 3.32a1 1 0 00.89 0l9.61-3.32a1 1 0 00.67-.95V5.55a1 1 0 00-.67-.95L13.33 1.28a1 1 0 00-.89 0zm-8.3 16.51V6.69l3.29-1.14v10.34zm4.43 1.54V4.59l3.52-1.22v16.08zm8.8-2.68l-4.14 1.43V8.85l4.14-1.44z"></path>
+    </svg>
+);
+
+export const ImportIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+    </svg>
+);
+
+export const VideoCameraIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
     </svg>
 );

@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { LoadingSpinner, SparklesIcon, DocumentTextIcon, LightBulbIcon, UploadIcon, XCircleIcon } from './icons';
+import { LoadingSpinner, SparklesIcon, DocumentTextIcon, LightBulbIcon, UploadIcon, XCircleIcon, JiraIcon, AdoIcon, VideoCameraIcon } from './icons';
 
 interface InputPanelProps {
   epicText: string;
@@ -8,6 +8,8 @@ interface InputPanelProps {
   setKnowledgeBaseText: (text: string) => void;
   onGenerate: () => void;
   isLoading: boolean;
+  onOpenImportModal: (type: 'jira' | 'ado') => void;
+  onOpenVideoInfoModal: () => void;
 }
 
 const InputPanel: React.FC<InputPanelProps> = ({
@@ -17,6 +19,8 @@ const InputPanel: React.FC<InputPanelProps> = ({
   setKnowledgeBaseText,
   onGenerate,
   isLoading,
+  onOpenImportModal,
+  onOpenVideoInfoModal
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [fileName, setFileName] = useState<string | null>(null);
@@ -74,14 +78,40 @@ const InputPanel: React.FC<InputPanelProps> = ({
                 <LightBulbIcon />
                 Knowledge Base (Optional)
             </label>
-            <button
-                onClick={handleUploadClick}
-                disabled={isLoading}
-                className="flex items-center text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-            >
-                <UploadIcon />
-                Upload File
-            </button>
+            <div className="flex items-center space-x-2">
+                <button
+                    onClick={handleUploadClick}
+                    disabled={isLoading}
+                    className="p-1.5 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-md disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    title="Upload Doc/Transcript"
+                >
+                    <UploadIcon />
+                </button>
+                 <button
+                    onClick={onOpenVideoInfoModal}
+                    disabled={isLoading}
+                    className="p-1.5 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-md disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    title="Upload Video"
+                >
+                    <VideoCameraIcon />
+                </button>
+                 <button
+                    onClick={() => onOpenImportModal('jira')}
+                    disabled={isLoading}
+                    className="p-1.5 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-md disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    title="Import from Jira"
+                >
+                    <JiraIcon />
+                </button>
+                 <button
+                    onClick={() => onOpenImportModal('ado')}
+                    disabled={isLoading}
+                    className="p-1.5 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-md disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    title="Import from Azure DevOps"
+                >
+                    <AdoIcon />
+                </button>
+            </div>
             <input
                 type="file"
                 ref={fileInputRef}
@@ -108,7 +138,7 @@ const InputPanel: React.FC<InputPanelProps> = ({
           id="knowledge"
           value={knowledgeBaseText}
           onChange={(e) => setKnowledgeBaseText(e.target.value)}
-          placeholder="Paste relevant documents, past tickets, domain notes, or upload a file..."
+          placeholder="Paste relevant documents, meeting transcripts, domain notes, or import from Jira/ADO..."
           className="w-full h-64 p-3 bg-slate-100 dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-150 ease-in-out text-slate-800 dark:text-slate-200"
           disabled={isLoading}
         />
