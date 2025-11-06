@@ -1,0 +1,5 @@
+{
+  "name": "AI Shadow Product Owner",
+  "description": "An AI-powered assistant that acts like a 'shadow product owner,' drafting user stories, acceptance criteria, and clarifying intent. It helps convert epics into a well-defined backlog, aligned with business strategy.",
+  "requestFramePermissions": []
+}
