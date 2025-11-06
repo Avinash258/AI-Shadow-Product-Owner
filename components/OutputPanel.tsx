@@ -1,8 +1,7 @@
-
 import React, { useState } from 'react';
 import { UserStory } from '../types';
 import StoryCard from './StoryCard';
-import { LoadingSpinner, ChatBubbleIcon, SendIcon, SparklesIcon } from './icons';
+import { LoadingSpinner, ChatBubbleIcon, SendIcon, SparklesIcon, JiraIcon, AdoIcon } from './icons';
 
 interface OutputPanelProps {
   stories: UserStory[];
@@ -11,6 +10,9 @@ interface OutputPanelProps {
   onClarify: (question: string) => Promise<void>;
   clarificationAnswer: string | null;
   isClarifying: boolean;
+  onExportJira: () => void;
+  onExportAdo: () => void;
+  exportingTo: 'jira' | 'ado' | null;
 }
 
 const OutputPanel: React.FC<OutputPanelProps> = ({
@@ -20,6 +22,9 @@ const OutputPanel: React.FC<OutputPanelProps> = ({
   onClarify,
   clarificationAnswer,
   isClarifying,
+  onExportJira,
+  onExportAdo,
+  exportingTo,
 }) => {
   const [question, setQuestion] = useState('');
 
@@ -35,7 +40,7 @@ const OutputPanel: React.FC<OutputPanelProps> = ({
     if (isLoading) {
       return (
         <div className="flex flex-col items-center justify-center text-center p-8 h-full">
-          <LoadingSpinner />
+          <div className="w-8 h-8"><LoadingSpinner /></div>
           <h3 className="mt-4 text-lg font-medium text-slate-700 dark:text-slate-200">Generating Backlog...</h3>
           <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">The AI Shadow PO is analyzing your request.</p>
         </div>
@@ -61,16 +66,45 @@ const OutputPanel: React.FC<OutputPanelProps> = ({
     }
 
     return (
-        <div className="overflow-y-auto h-full pr-2">
-            {stories.map(story => (
-                <StoryCard key={story.id} story={story} />
-            ))}
-        </div>
+      <div className="overflow-y-auto h-full pr-2">
+        {stories.map(story => (
+          <StoryCard key={story.id} story={story} />
+        ))}
+      </div>
     );
   };
 
   return (
     <div className="md:w-2/3 w-full flex flex-col bg-slate-100 dark:bg-slate-900/50 p-6 rounded-xl shadow-inner border border-slate-200 dark:border-slate-800 min-h-[60rem] md:min-h-0">
+      {stories.length > 0 && !isLoading && !error && (
+        <div className="flex-shrink-0 flex items-center justify-between mb-4 pb-4 border-b border-slate-200 dark:border-slate-700">
+            <h2 className="text-xl font-bold text-slate-800 dark:text-slate-100">Generated Backlog</h2>
+            <div className="flex items-center space-x-2">
+                <button
+                onClick={onExportJira}
+                disabled={!!exportingTo}
+                className="flex items-center justify-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-offset-slate-900 transition-colors duration-200"
+                >
+                {exportingTo === 'jira' ? (
+                    <><LoadingSpinner /><span className="ml-2 hidden sm:inline">Exporting...</span></>
+                ) : (
+                    <><JiraIcon /><span className="ml-2 hidden sm:inline">Export to Jira</span></>
+                )}
+                </button>
+                <button
+                onClick={onExportAdo}
+                disabled={!!exportingTo}
+                className="flex items-center justify-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-sky-600 hover:bg-sky-700 disabled:bg-sky-400 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 dark:focus:ring-offset-slate-900 transition-colors duration-200"
+                >
+                {exportingTo === 'ado' ? (
+                    <><LoadingSpinner /><span className="ml-2 hidden sm:inline">Exporting...</span></>
+                ) : (
+                    <><AdoIcon /><span className="ml-2 hidden sm:inline">Export to ADO</span></>
+                )}
+                </button>
+            </div>
+        </div>
+      )}
       <div className="flex-grow overflow-hidden relative">
         {renderContent()}
       </div>

@@ -1,6 +1,6 @@
-
 import React, { useState, useCallback } from 'react';
 import { generateProductBacklog, getClarification } from './services/geminiService';
+import { exportToJiraCsv, exportToAdoCsv } from './services/exportService';
 import { UserStory } from './types';
 import InputPanel from './components/InputPanel';
 import OutputPanel from './components/OutputPanel';
@@ -13,6 +13,8 @@ const App: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [clarificationAnswer, setClarificationAnswer] = useState<string | null>(null);
   const [isClarifying, setIsClarifying] = useState<boolean>(false);
+  const [exportingTo, setExportingTo] = useState<'jira' | 'ado' | null>(null);
+
 
   const handleGenerateStories = useCallback(async () => {
     if (!epicText.trim()) return;
@@ -49,6 +51,26 @@ const App: React.FC = () => {
       }
   }, [generatedStories, knowledgeBaseText]);
 
+  const handleExport = useCallback(async (type: 'jira' | 'ado') => {
+    setExportingTo(type);
+    
+    // Simulate an async operation to provide better UX for the loading state.
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
+    try {
+      if (type === 'jira') {
+        exportToJiraCsv(generatedStories);
+      } else {
+        exportToAdoCsv(generatedStories);
+      }
+    } catch (err) {
+      alert(`Export failed: ${err instanceof Error ? err.message : 'An unknown error occurred.'}`);
+    } finally {
+      setExportingTo(null);
+    }
+  }, [generatedStories]);
+
+
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 p-4 sm:p-6 lg:p-8">
       <div className="max-w-7xl mx-auto">
@@ -77,6 +99,9 @@ const App: React.FC = () => {
             onClarify={handleClarify}
             clarificationAnswer={clarificationAnswer}
             isClarifying={isClarifying}
+            onExportJira={() => handleExport('jira')}
+            onExportAdo={() => handleExport('ado')}
+            exportingTo={exportingTo}
           />
         </main>
 

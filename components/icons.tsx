@@ -48,3 +48,15 @@ export const XCircleIcon = () => (
     <path strokeLinecap="round" strokeLinejoin="round" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
   </svg>
 );
+
+export const JiraIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M22.08 10.73l-8.35-8.35a1.84 1.84 0 00-2.6 0l-8.35 8.35a1.84 1.84 0 000 2.6l8.35 8.35a1.84 1.84 0 002.6 0l8.35-8.35a1.84 1.84 0 000-2.6zM11.51 3.4l7.08 7.08h-4.48l-2.6-2.6zm.9 17.2l-7.08-7.08h4.48l2.6 2.6z"></path>
+    </svg>
+);
+
+export const AdoIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M12.44 1.28l-9.61 3.32a1 1 0 00-.67.95v13.34a1 1 0 00.67.95l9.61 3.32a1 1 0 00.89 0l9.61-3.32a1 1 0 00.67-.95V5.55a1 1 0 00-.67-.95L13.33 1.28a1 1 0 00-.89 0zm-8.3 16.51V6.69l3.29-1.14v10.34zm4.43 1.54V4.59l3.52-1.22v16.08zm8.8-2.68l-4.14 1.43V8.85l4.14-1.44z"></path>
+    </svg>
+);
