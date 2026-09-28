@@ -1,8 +1,8 @@
-# AI Shadow Product Owner — Test Case Generator
+# AI Shadow Product Owner â€” Test Case Generator
 
-Requirement-to-scenario generation with coverage and gap analysis — an AI assistant that behaves like a **shadow product owner** for quality engineering.
+Requirement-to-scenario generation with coverage and gap analysis â€” an AI assistant that behaves like a **shadow product owner** for quality engineering.
 
-> Related RAG knowledge base: [RagBaseSolution](https://github.com/Avinash258/RagBaseSolution) · [Portfolio](https://avinash258.github.io/Protfolio/)
+> Related RAG knowledge base: [RagBaseSolution](https://github.com/Avinash258/RagBaseSolution) Â· [Portfolio](https://avinash258.github.io/Protfolio/)
 
 ## Overview
 
@@ -17,7 +17,7 @@ Web app that turns user stories and requirements into structured test scenarios,
 
 ## Stack
 
-- React · TypeScript · Vite
+- React Â· TypeScript Â· Vite
 - AI services layer (`services/`)
 - Tailwind-ready UI components
 
@@ -35,9 +35,9 @@ npm run build
 npm run preview
 ```
 
-Configure your AI provider keys via the app’s environment / metadata as documented in `metadata.json` and local `.env` (do not commit secrets).
+Configure your AI provider keys via the appâ€™s environment / metadata as documented in `metadata.json` and local `.env` (do not commit secrets).
 
 ## Author
 
-**Pushanshu Avinash Sharma** — QA Automation Architect / Lead SDET  
-[GitHub](https://github.com/Avinash258) · [LinkedIn](https://www.linkedin.com/in/p-avinash-sharma-8b0203b9/) · [Portfolio](https://avinash258.github.io/Protfolio/)
+**Avinash Sharma** â€” QA Automation Architect / Lead SDET  
+[GitHub](https://github.com/Avinash258) Â· [LinkedIn](https://www.linkedin.com/in/p-avinash-sharma-8b0203b9/) Â· [Portfolio](https://avinash258.github.io/Protfolio/)
