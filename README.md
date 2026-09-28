@@ -1,20 +1,43 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# AI Shadow Product Owner — Test Case Generator
 
-# Run and deploy your AI Studio app
+Requirement-to-scenario generation with coverage and gap analysis — an AI assistant that behaves like a **shadow product owner** for quality engineering.
 
-This contains everything you need to run your app locally.
+> Related RAG knowledge base: [RagBaseSolution](https://github.com/Avinash258/RagBaseSolution) · [Portfolio](https://avinash258.github.io/Protfolio/)
 
-View your app in AI Studio: https://ai.studio/apps/drive/13YDTzevaDU4iNxeu5uaD5qvinDIjFmcy
+## Overview
 
-## Run Locally
+Web app that turns user stories and requirements into structured test scenarios, highlights coverage gaps, and supports RAG-backed context so suggestions stay grounded in project knowledge. Built as a modern React + TypeScript front end with AI services behind it.
 
-**Prerequisites:**  Node.js
+## Features
 
+- Requirement / user-story intake
+- Scenario generation with coverage and gap analysis
+- Componentised UI for review and iteration
+- Designed to pair with a RAG knowledge base for project-aware output
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+## Stack
+
+- React · TypeScript · Vite
+- AI services layer (`services/`)
+- Tailwind-ready UI components
+
+## Getting started
+
+```bash
+npm install
+npm run dev
+```
+
+Build for production:
+
+```bash
+npm run build
+npm run preview
+```
+
+Configure your AI provider keys via the app’s environment / metadata as documented in `metadata.json` and local `.env` (do not commit secrets).
+
+## Author
+
+**Pushanshu Avinash Sharma** — QA Automation Architect / Lead SDET  
+[GitHub](https://github.com/Avinash258) · [LinkedIn](https://www.linkedin.com/in/p-avinash-sharma-8b0203b9/) · [Portfolio](https://avinash258.github.io/Protfolio/)
